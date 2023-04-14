@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- css -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!--script-->
+    <script src="//code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        window.onload = function () {
+            $.ajax({
+                type: 'GET',
+                url: '/api/popular',
+            }).done((res) => {
+                console.log(res);
+                let toons = "";
+                for (let i = 0; i < res.length; i++) {
+                    toons += `<div loading='lazy' style="background-image:url('${res[i].thumb}')"><span>${res[i].title}</span></div>`;
+                }
+                $(".container").append(toons);
+                $(".loading").removeClass("fade-in");
+                $(".loading").addClass("fade-out");
+                $(".def").css({ 'display': 'block' });
+            });
+        }
+    </script>
+    <title>광고없음</title>
+</head>
+<body>
+    <div class="loading fade-in">
+        <div>
+            <div class="circle"></div>
+        </div>
+    </div>
+    <div class="def" style="display: none;">
+        <header>
+            <div class="outline">
+                <input spellcheck="false" type="text" placeholder="단어">
+                <button>검색</button>
+            </div>
+        </header>
+        <div class="container">
+    
+        </div>
+    </div>
+</body>
+
+</html>

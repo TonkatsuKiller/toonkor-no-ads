@@ -1,0 +1,148 @@
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+}
+
+:root {
+    --primary: rgb(0, 110, 230);
+    --primary-bg: rgba(0, 110, 230, .1);
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        height: 0;
+    }
+}
+
+@keyframes circle {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.fade-in {
+    animation: fade-in 1s forwards;
+}
+.fade-out {
+    animation: fade-out 1s forwards;
+}
+
+.loading {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .2s;
+}
+
+.loading div {
+    background-color: var(--primary-bg);
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.circle {
+    border: 5px solid var(--primary);
+    border-right: 5px solid transparent;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: circle 1s linear infinite;
+}
+
+header {
+    position: fixed;
+    padding: 10px;
+    background-color: #fff;
+
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
+    text-align: center;
+
+    z-index: 1;
+}
+
+header .outline {
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.outline input {
+    width: 300px;
+    border: none;
+    outline: none;
+}
+
+.outline button {
+    color: var(--primary);
+    background-color: var(--primary-bg);
+    border: none;
+    outline: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.container {
+    height: 100vh;
+    padding: 60px 30px;
+}
+
+.container {
+    text-align: center;
+}
+
+.container div {
+    display: inline-block;
+    font-size: 14px;
+    width: 150px;
+    height: 150px;
+    margin: 5px;
+    border-radius: 5px;
+    position: relative;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container div span {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    background-color: rgba(0, 0, 0, .8);
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    padding: 3px;
+    border-radius: 5px;
+    color: #fff;
+}
