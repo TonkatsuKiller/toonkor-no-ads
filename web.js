@@ -26,6 +26,21 @@ function replaceAll(str, searchStr, replaceStr) {
     return str.split(searchStr).join(replaceStr);
 }
 
+async function getSearchResult(word) {
+    let returnData = [];
+    const className = ".section-item";
+    const uri = base + "/bbs/search.php?sfl=wr_subject%7C%7Cwr_content&stx=" + word;
+    const html = await axios.get(uri).then(res => res.data);
+    const $ = cheerio.load(html);
+    $(className).each(function (idx, elem) {
+        returnData.push({
+            title: $(elem).find('#title').text().trim(),
+            thumb: ($(elem).find('img').attr('data-src') == undefined ? $(elem).find('img').attr('src') : $(elem).find('img').attr('data-src'))
+        });
+    });
+    return returnData;
+}
+
 async function getPopularWebtoons() {
     let returnData = [];
     const className = ".section-item";
@@ -85,12 +100,23 @@ app.post('/api/script', async function (req, res) {
     return res.json(obj);
 });
 
+app.post('/api/search', async function (req, res) {
+    return res.json(await getSearchResult(req.body.word));
+});
+
 app.post('/api/episode', async function (req, res) {
     return res.json(await getAllEpisode(req.body.title));
 });
 
 app.get('/', async function (req, res) {
     return res.render('index.ejs');
+});
+
+app.get('/search', async function (req, res) {
+    const word = req.query.word;
+    return res.render('search.ejs', {
+        word
+    });
 });
 
 app.get('/episode/:title', async function (req, res) {

@@ -16,8 +16,11 @@
 
         window.onload = function () {
             $.ajax({
-                type: 'GET',
-                url: '/api/popular',
+                type: 'POST',
+                url: '/api/search',
+                data: {
+                    word: '<%= word %>'
+                }
             }).done((res) => {
                 console.log(res);
                 let toons = "";
@@ -41,21 +44,12 @@
     </div>
     <div class="def" style="display: none;">
         <header>
-            <div class="outline">
-                <input id="search" spellcheck="false" type="text" placeholder="단어">
-                <button onclick="window.location.href=`/search?word=${$('#search').val()}`">검색</button>
-            </div>
+            <h4><%= word %></h4>
         </header>
         <div class="container">
-    
+            <button class="h" onclick="window.location.href='/'">홈으로</button>
         </div>
     </div>
-    <!-- script -->
-    <script>
-        $("#search").keydown((e) => {
-            if (e.keyCode == 13) window.location.href=`/search?word=${$("#search").val()}`;
-        })
-    </script>
 </body>
 
 </html>

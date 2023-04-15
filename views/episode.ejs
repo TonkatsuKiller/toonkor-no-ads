@@ -48,12 +48,18 @@
         <header>
             <div class="outline">
                 <input spellcheck="false" type="text" placeholder="단어">
-                <button>검색</button>
+                <button onclick="window.location.href=`/search?word=${$('#search').val()}`">검색</button>
             </div>
         </header>
         <div class="container">
             <div class="thumb" style="background-image: url('<%= thumb %>');"></div>
         </div>
     </div>
+    <!-- script -->
+    <script>
+        $("#search").keydown((e) => {
+            if (e.keyCode == 13) window.location.href=`/search?word=${$("#search").val()}`;
+        })
+    </script>
 </body>
 </html>

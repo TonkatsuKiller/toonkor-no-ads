@@ -111,6 +111,21 @@ header .outline {
     cursor: pointer;
 }
 
+.h {
+    color: var(--primary);
+    background-color: var(--primary-bg);
+    border: none;
+    outline: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block; 
+    width: 90%;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    height: 40px;
+}
+
 .container {
     height: 100vh;
     padding: 60px 30px;
