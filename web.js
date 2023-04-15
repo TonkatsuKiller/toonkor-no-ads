@@ -22,6 +22,10 @@ app.use(session({
     saveUninitialized: true
 }));
 
+function replaceAll(str, searchStr, replaceStr) {
+    return str.split(searchStr).join(replaceStr);
+}
+
 async function getPopularWebtoons() {
     let returnData = [];
     const className = ".section-item";
@@ -37,12 +41,44 @@ async function getPopularWebtoons() {
     return returnData.slice(0, 99);
 }
 
+async function getAllEpisode(title) {
+    let returnData = [];
+    try {
+        const html = await axios.get(`${base}/${title}`).then(res => res.data);
+        const $ = cheerio.load(html);
+        $('#bo_list').find('.content__title').each(function (idx, elem) {
+            const origin = $(elem).text().trim();
+            const repl = replaceAll(origin, ' ', '_');
+            returnData.push({ origin, repl });
+        });
+        return returnData;
+    }catch {
+        return false;
+    }
+}
+
 app.get('/api/popular', async function (req, res) {
     return res.json(await getPopularWebtoons());
 });
 
+app.post('/api/episode', async function (req, res) {
+    return res.json(await getAllEpisode(req.body.title));
+});
+
 app.get('/', async function (req, res) {
     return res.render('index.ejs');
+});
+
+app.get('/episode/:title', async function (req, res) {
+    const title = req.params.title;
+    console.log(req.query.thumb)
+    let thumb = String(req.query.thumb).split('_');
+    thumb.splice(thumb.length - 1);
+    thumb = thumb.join('_').replace('thumb-', '') + '.jpg';
+    console.log(thumb);
+    return res.render('episode.ejs', {
+        title, thumb
+    });
 });
 
 app.listen(port, function () {console.log(`listening on ${port}`)});

@@ -109,9 +109,6 @@ header .outline {
 .container {
     height: 100vh;
     padding: 60px 30px;
-}
-
-.container {
     text-align: center;
 }
 
@@ -145,4 +142,10 @@ header .outline {
     padding: 3px;
     border-radius: 5px;
     color: #fff;
+}
+
+@media screen and (max-width: 400px) {
+    .container div span {
+        font-size: 12px;
+    }
 }
