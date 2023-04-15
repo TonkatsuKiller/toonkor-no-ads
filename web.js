@@ -96,10 +96,11 @@ app.get('/', async function (req, res) {
 app.get('/episode/:title', async function (req, res) {
     const title = req.params.title;
     let thumb = req.query.thumb;
+    const format = thumb.split('.').last();
     if (thumb.includes("0x1")) {
         thumb = thumb.split('_');
         thumb.splice(thumb.length - 1);
-        thumb = thumb.join('_').replace('thumb-', '') + '.jpg';
+        thumb = thumb.join('_').replace('thumb-', '') + `.${format}`;
     }
     return res.render('episode.ejs', {
         title, thumb
