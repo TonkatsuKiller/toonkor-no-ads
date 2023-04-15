@@ -9,8 +9,10 @@
     <!-- script -->
     <script src="//code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
+        const titleOrigin = '<%= title %>';
+
         function view(title) {
-            window.location.href = `/episode/view/${title}`;
+            window.location.href = `/episode/view/${title}?title=${titleOrigin}&thumb=<%= thumb %>`;
         }
 
         window.onload = function () {
@@ -23,7 +25,7 @@
                 }
             }).done((res) => {
                 console.log(res);
-                let toons = "";
+                let toons = "<div class='home' onclick='window.location.href=`/`'><span>홈으로</span></div>";
                 for (let i = 0; i < res.length; i++) {
                     toons += `<div class='item' onclick='view("${res[i].repl}")'"><span>${res[i].origin}</span></div>`;
                 }

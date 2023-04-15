@@ -52,13 +52,37 @@ async function getAllEpisode(title) {
             returnData.push({ origin, repl });
         });
         return returnData;
-    }catch {
+    } catch {
         return false;
     }
 }
 
+function findTextAndReturnRemainder(target, variable) {
+    const chopFront = target.substring(target.search(variable) + variable.length, target.length);
+    const result = chopFront.substring(0, chopFront.search(";"));
+    return result;
+}
+
+async function getWebtoonImgScript(link) {
+    link = `${base}/${link}.html`;
+    const html = await axios.get(link).then(res => res.data);
+    const $ = cheerio.load(html);
+    const text = $($('script')).text();
+    const findAndClean = findTextAndReturnRemainder(text, "var toon_img =");
+    const result = replaceAll(replaceAll(findAndClean, "'", ''), ' ', '');
+    return result;
+}
+
 app.get('/api/popular', async function (req, res) {
     return res.json(await getPopularWebtoons());
+});
+
+app.post('/api/script', async function (req, res) {
+    const obj = {
+        script: await getWebtoonImgScript(req.body.link),
+        base
+    }
+    return res.json(obj);
 });
 
 app.post('/api/episode', async function (req, res) {
@@ -71,14 +95,31 @@ app.get('/', async function (req, res) {
 
 app.get('/episode/:title', async function (req, res) {
     const title = req.params.title;
-    console.log(req.query.thumb)
-    let thumb = String(req.query.thumb).split('_');
-    thumb.splice(thumb.length - 1);
-    thumb = thumb.join('_').replace('thumb-', '') + '.jpg';
-    console.log(thumb);
+    let thumb = req.query.thumb;
+    if (thumb.includes("0x1")) {
+        thumb = thumb.split('_');
+        thumb.splice(thumb.length - 1);
+        thumb = thumb.join('_').replace('thumb-', '') + '.jpg';
+    }
     return res.render('episode.ejs', {
         title, thumb
     });
 });
 
-app.listen(port, function () {console.log(`listening on ${port}`)});
+app.get('/episode/view/:link', async function (req, res) {
+    const title = req.query.title;
+    const link = req.params.link;
+    const thumb = req.query.thumb;
+    const origin = replaceAll(req.params.link, '_', ' ');
+
+    const episode = await getAllEpisode(title);
+    const findIdx = episode.findIndex(x => x.repl === link);
+    const prev = episode.length - 1 == findIdx ? false : `/episode/view/${episode[episode.findIndex(x => x.repl === link) + 1].repl}?title=${title}`;
+    const next = findIdx == 0 ? false : `/episode/view/${episode[episode.findIndex(x => x.repl === link) - 1].repl}?title=${title}`;
+
+    return res.render('view.ejs', {
+        link, title, prev, next, origin, thumb
+    })
+});
+
+app.listen(port, function () { console.log(`listening on ${port}`) });

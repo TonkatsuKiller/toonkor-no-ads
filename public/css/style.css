@@ -1,4 +1,5 @@
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
 * {
     margin: 0;
     padding: 0;
@@ -15,6 +16,7 @@
     0% {
         opacity: 0;
     }
+
     100% {
         opacity: 1;
     }
@@ -24,6 +26,7 @@
     0% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
         height: 0;
@@ -34,6 +37,7 @@
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }
@@ -42,6 +46,7 @@
 .fade-in {
     animation: fade-in 1s forwards;
 }
+
 .fade-out {
     animation: fade-out 1s forwards;
 }
@@ -145,6 +150,19 @@ header .outline {
 }
 
 @media screen and (max-width: 400px) {
+    .outline input {
+        width: 150px;
+    }
+
+    .container {
+        padding: 60px 10px;
+    }
+
+    .container div {
+        width: 100px;
+        height: 100px;
+    }
+
     .container div span {
         font-size: 12px;
     }

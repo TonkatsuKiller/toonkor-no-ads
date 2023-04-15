@@ -112,6 +112,7 @@ header .outline {
     text-align: center;
 }
 
+
 .thumb {
     width: 90%;
     max-width: 500px;
@@ -137,7 +138,30 @@ header .outline {
     cursor: pointer;
 }
 
+.home {
+    width: 90%;
+    max-width: 500px;
+    background-color: var(--primary-bg);
+    color: var(--primary);
+    padding: 10px;
+    margin: 0 auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    text-align: left;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 400px) {
+    .outline input {
+        width: 150px;
+    }
+
+    .container {
+        padding: 60px 10px;
+    }
+
     .item {
         font-size: 12px;
     }
