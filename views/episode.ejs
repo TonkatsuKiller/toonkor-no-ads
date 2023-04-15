@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- css -->
+    <link rel="stylesheet" href="/css/episode.css">
+    <!-- script -->
+    <script src="//code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        function view(title) {
+            window.location.href = `/episode/view/${title}`;
+        }
+
+        window.onload = function () {
+            $.ajax({
+                type: 'POST',
+                url: '/api/episode',
+                data: {
+                    title: '<%= title %>',
+                    thumb: '<%= thumb %>'
+                }
+            }).done((res) => {
+                console.log(res);
+                let toons = "";
+                for (let i = 0; i < res.length; i++) {
+                    toons += `<div class='item' onclick='view("${res[i].repl}")'"><span>${res[i].origin}</span></div>`;
+                }
+                $(".container").append(toons);
+                $(".loading").removeClass("fade-in");
+                $(".loading").addClass("fade-out");
+                $(".def").css({ 'display': 'block' });
+            });
+        }
+    </script>
+    <title><%= title %> | 회차정보</title>
+</head>
+<body>
+    <div class="loading fade-in">
+        <div>
+            <div class="circle"></div>
+        </div>
+    </div>
+    <div class="def" style="display: none;">
+        <header>
+            <div class="outline">
+                <input spellcheck="false" type="text" placeholder="단어">
+                <button>검색</button>
+            </div>
+        </header>
+        <div class="container">
+            <div class="thumb" style="background-image: url('<%= thumb %>');"></div>
+        </div>
+    </div>
+</body>
+</html>
