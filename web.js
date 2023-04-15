@@ -114,8 +114,8 @@ app.get('/episode/view/:link', async function (req, res) {
 
     const episode = await getAllEpisode(title);
     const findIdx = episode.findIndex(x => x.repl === link);
-    const prev = episode.length - 1 == findIdx ? false : `/episode/view/${episode[episode.findIndex(x => x.repl === link) + 1].repl}?title=${title}&thumb=${thumb}`;
-    const next = findIdx == 0 ? false : `/episode/view/${episode[episode.findIndex(x => x.repl === link) - 1].repl}?title=${title}&thumb=${thumb}`;
+    const prev = episode.length - 1 == findIdx ? false : `/episode/view/${episode[episode.findIndex(x => x.repl === link) + 1].repl}?title=${title}`;
+    const next = findIdx == 0 ? false : `/episode/view/${episode[episode.findIndex(x => x.repl === link) - 1].repl}?title=${title}`;
 
     return res.render('view.ejs', {
         link, title, prev, next, origin, thumb

@@ -64,11 +64,11 @@
                 <button onclick="window.location.href=`/episode/<%= title %>?thumb=<%= thumb %>`">목록</button>
             </div>
             <% if (prev) { %>
-                <div id="left" onclick="window.location.href='<%= prev %>'"><span class="fa fa-angle-double-left"></span>
+                <div id="left" onclick="window.location.href='<%= prev %>&thumb=<%= thumb %>'"><span class="fa fa-angle-double-left"></span>
                 </div>
                 <% } %>
                     <% if (next) { %>
-                        <div id="right" onclick="window.location.href='<%= next %>'"><span
+                        <div id="right" onclick="window.location.href='<%= next %>&thumb=<%= thumb %>'"><span
                                 class="fa fa-angle-double-right"></span></div>
                         <% } %>
                             <div class="imgs" onclick="sh();"></div>
