@@ -12,6 +12,14 @@
     --primary-bg: rgba(0, 110, 230, .1);
 }
 
+body{
+    -ms-overflow-style: none;
+}
+    
+::-webkit-scrollbar {
+    display: none;
+}
+
 @keyframes fade-in {
     0% {
         opacity: 0;

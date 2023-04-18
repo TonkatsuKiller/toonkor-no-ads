@@ -4,9 +4,12 @@ const session = require('express-session');
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-const port = 8005;
+const port = 80;
 const app = express();
 let base = "https://toonkor203.com";
+
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 
 // ======================================
 
@@ -88,6 +91,26 @@ async function getWebtoonImgScript(link) {
     return result;
 }
 
+io.on('connection', async (socket) => {
+    console.log(`${socket.id} connected`);
+    socket.on('data', async (e) => {
+        const total = e.length;
+        let real = 0;
+        let result = 0;
+        for (let i = 0; i < total; i++) {
+            real = i + 1;
+            result = (real / total * 100).toFixed(0);
+            console.log(result)
+            socket.emit('realtime', { result, repl: e[i].repl, data: await getWebtoonImgScript(e[i].repl), end: false });
+        }
+        socket.emit('realtime', { end: true });
+    });
+    socket.on("connect_error", (err) => {
+        console.log(err.message); // prints the message associated with the error
+      });
+});
+
+
 app.get('/api/popular', async function (req, res) {
     return res.json(await getPopularWebtoons());
 });
@@ -149,4 +172,4 @@ app.get('/episode/view/:link', async function (req, res) {
     })
 });
 
-app.listen(port, function () { console.log(`listening on ${port}`) });
+http.listen(port, function () { console.log(`listening on ${port}`) });

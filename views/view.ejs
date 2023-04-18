@@ -10,22 +10,35 @@
     <script src="//code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
         window.onload = function () {
-            $.ajax({
-                type: 'POST',
-                url: '/api/script',
-                data: {
-                    link: '<%= link %>'
-                }
-            }).done((res) => {
-                console.log(res);
+            const d = localStorage.getItem('<%= link %>')
+            if (!d) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/script',
+                    data: {
+                        link: '<%= link %>'
+                    }
+                }).done((res) => {
+                    console.log(res);
+                    function replaceAll(str, searchStr, replaceStr) {
+                        return str.split(searchStr).join(replaceStr);
+                    }
+                    $('.imgs').html(replaceAll(window.atob(res.script), 'src="', `src="${res.base}`));
+                    $(".loading").removeClass("fade-in");
+                    $(".loading").addClass("fade-out");
+                    $(".def").css({ 'display': 'block' });
+                });
+            }
+            else {
+                console.log('exist!');
                 function replaceAll(str, searchStr, replaceStr) {
                     return str.split(searchStr).join(replaceStr);
                 }
-                $('.imgs').html(replaceAll(window.atob(res.script), 'src="', `src="${res.base}`));
+                $('.imgs').html(replaceAll(window.atob(d), 'src="', `src="https://toonkor203.com`));
                 $(".loading").removeClass("fade-in");
                 $(".loading").addClass("fade-out");
                 $(".def").css({ 'display': 'block' });
-            });
+            }
         }
 
         let tmp = true;
