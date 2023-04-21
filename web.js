@@ -6,7 +6,7 @@ const cheerio = require('cheerio');
 
 const port = 80;
 const app = express();
-let base = "https://toonkor203.com";
+let base = "https://toonkor205.com";
 
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
@@ -45,18 +45,20 @@ async function getSearchResult(word) {
 }
 
 async function getPopularWebtoons() {
-    let returnData = [];
-    const className = ".section-item";
-    const uri = base + "/%EC%9B%B9%ED%88%B0?fil=%EC%9D%B8%EA%B8%B0";
-    const html = await axios.get(uri).then(res => res.data);
-    const $ = cheerio.load(html);
-    $(className).each(function (idx, elem) {
-        returnData.push({
-            title: $(elem).find('#title').text().trim(),
-            thumb: base + ($(elem).find('img').attr('data-src') == undefined ? $(elem).find('img').attr('src') : $(elem).find('img').attr('data-src'))
+    try {
+        let returnData = [];
+        const className = ".section-item";
+        const uri = base + "/%EC%9B%B9%ED%88%B0?fil=%EC%9D%B8%EA%B8%B0";
+        const html = await axios.get(uri).then(res => res.data);
+        const $ = cheerio.load(html);
+        $(className).each(function (idx, elem) {
+            returnData.push({
+                title: $(elem).find('#title').text().trim(),
+                thumb: base + ($(elem).find('img').attr('data-src') == undefined ? $(elem).find('img').attr('src') : $(elem).find('img').attr('data-src'))
+            });
         });
-    });
-    return returnData.slice(0, 99);
+        return returnData.slice(0, 99);
+    } catch { }
 }
 
 async function getAllEpisode(title) {
@@ -107,7 +109,7 @@ io.on('connection', async (socket) => {
     });
     socket.on("connect_error", (err) => {
         console.log(err.message); // prints the message associated with the error
-      });
+    });
 });
 
 
@@ -123,12 +125,22 @@ app.post('/api/script', async function (req, res) {
     return res.json(obj);
 });
 
+app.post('/api/base', (req, res) => {
+    base = req.body.base;
+    console.log(base);
+    return res.send('1');
+});
+
 app.post('/api/search', async function (req, res) {
     return res.json(await getSearchResult(req.body.word));
 });
 
 app.post('/api/episode', async function (req, res) {
     return res.json(await getAllEpisode(req.body.title));
+});
+
+app.get('/change/base', (req, res) => {
+    return res.render('base.ejs');
 });
 
 app.get('/', async function (req, res) {
@@ -168,6 +180,7 @@ app.get('/episode/view/:link', async function (req, res) {
     const next = findIdx == 0 ? false : `/episode/view/${episode[episode.findIndex(x => x.repl === link) - 1].repl}?title=${title}`;
 
     return res.render('view.ejs', {
+        base,
         link, title, prev, next, origin, thumb
     })
 });

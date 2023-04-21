@@ -19,6 +19,7 @@
                 type: 'GET',
                 url: '/api/popular',
             }).done((res) => {
+                if (res.length == 0) return window.location.reload();
                 console.log(res);
                 let toons = "";
                 for (let i = 0; i < res.length; i++) {

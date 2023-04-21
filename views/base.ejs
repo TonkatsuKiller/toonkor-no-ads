@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            letter-spacing: -.5px;
+            font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            text-align: center;
+        }
+
+        input {
+            border: 2px solid rgb(0, 110, 230);
+            outline: none;
+            border-radius: 5px;
+            padding: 8px;
+            width: 50%;
+        }
+
+        input, button {
+            display: block;
+            margin: 0 auto;
+        }
+
+        button {
+            width: 50%;
+            margin-top: 5px;
+            padding: 10px;
+            border: 0;
+            outline: none;
+            background-color: rgba(0, 110, 230, .1);
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+    <script src="//code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        function oc() {
+            $.ajax({
+                type: 'POST',
+                url: '/api/base',
+                data: { base: $("#f").val() }
+            }).done((res) => {
+                alert('done');
+            });
+        }
+    </script>
+    <title>change base address</title>
+</head>
+
+<body>
+    <div class="container">
+        <input id="f" type="text" placeholder="base">
+        <button onclick="oc()">Push</button>
+    </div>
+</body>
+
+</html>

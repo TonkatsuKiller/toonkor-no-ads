@@ -34,7 +34,7 @@
                 function replaceAll(str, searchStr, replaceStr) {
                     return str.split(searchStr).join(replaceStr);
                 }
-                $('.imgs').html(replaceAll(window.atob(d), 'src="', `src="https://toonkor203.com`));
+                $('.imgs').html(replaceAll(window.atob(d), 'src="', `src="<%= base %>`));
                 $(".loading").removeClass("fade-in");
                 $(".loading").addClass("fade-out");
                 $(".def").css({ 'display': 'block' });
